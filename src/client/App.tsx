@@ -1,36 +1,26 @@
 import * as React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Chirps from './components/Chirps';
+import Details from './components/Details';
+import './scss/app';
 
-class App extends React.Component<IAppProps, IAppState> {
-	constructor(props: IAppProps) {
-		super(props);
-		this.state = {
-			name: null
-		};
-	}
 
-	async componentDidMount() {
-		try {
-			let r = await fetch('/api/hello');
-			let name = await r.json();
-			this.setState({ name });
-		} catch (error) {
-			console.log(error);
-		}
-	}
 
-	render() {
-		return (
-			<main className="container my-5">
-				<h1 className="text-primary text-center">Hello {this.state.name}!</h1>
-			</main>
-		);
-	}
-}
+const App: React.SFC<IAppProps> = props => {
 
-export interface IAppProps {}
 
-export interface IAppState {
-	name: string;
+	return (
+
+		<BrowserRouter>
+			<Switch>
+				<Route exact path="/" component={Chirps} />
+				<Route exact path="/:id/admin" component={Details} />
+			</Switch>
+		</BrowserRouter>
+
+	);
 }
 
 export default App;
+
+interface IAppProps { }
