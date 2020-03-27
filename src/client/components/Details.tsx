@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Chirp } from './Chirps';
-import { RouteComponentProps } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
-export interface DetailsProps extends RouteComponentProps<{ id: string }> { }
+export interface DetailsProps { }
 
-const Details: React.SFC<DetailsProps> = ({ history, match: { params: { id } } }) => {
+const Details: React.FC<DetailsProps> = () => {
+
+    const { id } = useParams();
+    const history = useHistory();
 
 
     const [author, setAuthor] = useState<string>('');
@@ -29,7 +31,7 @@ const Details: React.SFC<DetailsProps> = ({ history, match: { params: { id } } }
                 'Content-Type': 'application/json'
             }
         })
-            .then(() => history.goBack());
+            .then(() => history.push('/'));
     };
 
     const deleteChirp = (e: React.MouseEvent<HTMLElement>) => {
@@ -37,7 +39,7 @@ const Details: React.SFC<DetailsProps> = ({ history, match: { params: { id } } }
         fetch(`/chirps/${id}`, {
             method: 'DELETE'
         })
-            .then(() => history.goBack());
+            .then(() => history.push('/'));
     };
 
     return (

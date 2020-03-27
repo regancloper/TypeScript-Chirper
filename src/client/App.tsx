@@ -6,7 +6,7 @@ import './scss/app';
 
 
 
-const App: React.SFC<IAppProps> = props => {
+const App: React.FC<IAppProps> = props => {
 
 
 	return (
@@ -14,7 +14,9 @@ const App: React.SFC<IAppProps> = props => {
 		<BrowserRouter>
 			<Switch>
 				<Route exact path="/" component={Chirps} />
-				<Route exact path="/:id/admin" component={Details} />
+				<Route exact path="/:id/admin">
+					<Details />
+				</Route>
 			</Switch>
 		</BrowserRouter>
 

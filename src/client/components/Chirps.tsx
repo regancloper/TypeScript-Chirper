@@ -1,33 +1,22 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { Chirp } from '../utils/types';
 
 export interface ChirpsProps { };
 
-export interface Chirp {
-    id: number,
-    author: string,
-    text: string
-};
 
-
-const Chirps: React.SFC<ChirpsProps> = (props) => {
+const Chirps: React.FC<ChirpsProps> = () => {
 
     const [chirps, setChirps] = useState<Chirp[]>([]);
     const [newAuthor, setAuthor] = useState<string>('');
     const [newText, setText] = useState<string>('');
 
-    const getChirps = async () => {
+    const getChirps = useCallback(async () => {
         let r = await fetch('/chirps');
         let data = await r.json();
-        let arr: Chirp[] = [];
-        for (var i in data) {
-            if (i !== "nextid") {
-                arr.push({ id: parseInt(i), author: data[i].user, text: data[i].text });
-            }
-        }
-        setChirps(arr);
-    }
+        setChirps(data);
+    }, []);
 
 
     useEffect(() => {

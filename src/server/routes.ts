@@ -8,24 +8,35 @@ router.get('/:id?', (req, res) => {
     if (id) {
         res.json(getChirp(id));
     } else {
-        res.status(200).send(getChirps());
+        const data = getChirps();
+        let arr = [];
+        for (var i in data) {
+            if (i !== "nextid") {
+                arr.push({ id: parseInt(i), author: data[i].user, text: data[i].text });
+            }
+        }
+        res.status(200).json(arr);
     }
 });
 
 router.post('/', (req, res) => {
-    createChirp(req.body);
+    const chirp = req.body;
+    createChirp(chirp);
     res.sendStatus(200);
 });
 
 
 router.put('/:id', (req, res) => {
-    updateChirp(parseInt(req.params.id), req.body);
+    const id = parseInt(req.params.id);
+    const chirp = req.body;
+    updateChirp(id, chirp);
     res.sendStatus(200);
 });
 
 
 router.delete('/:id', (req, res) => {
-    deleteChirp(parseInt(req.params.id));
+    const id = parseInt(req.params.id);
+    deleteChirp(id);
     res.sendStatus(200);
 });
 

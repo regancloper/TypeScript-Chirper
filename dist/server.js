@@ -106,7 +106,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar fs
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar express = __webpack_require__(/*! express */ \"express\");\nvar chirpstore_1 = __webpack_require__(/*! ./chirpstore */ \"./src/server/chirpstore.ts\");\nvar router = express.Router();\nrouter.get('/:id?', function (req, res) {\n    var id = parseInt(req.params.id);\n    if (id) {\n        res.json(chirpstore_1.getChirp(id));\n    }\n    else {\n        res.status(200).send(chirpstore_1.getChirps());\n    }\n});\nrouter.post('/', function (req, res) {\n    chirpstore_1.createChirp(req.body);\n    res.sendStatus(200);\n});\nrouter.put('/:id', function (req, res) {\n    chirpstore_1.updateChirp(parseInt(req.params.id), req.body);\n    res.sendStatus(200);\n});\nrouter.delete('/:id', function (req, res) {\n    chirpstore_1.deleteChirp(parseInt(req.params.id));\n    res.sendStatus(200);\n});\nexports.default = router;\n\n\n//# sourceURL=webpack:///./src/server/routes.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar express = __webpack_require__(/*! express */ \"express\");\nvar chirpstore_1 = __webpack_require__(/*! ./chirpstore */ \"./src/server/chirpstore.ts\");\nvar router = express.Router();\nrouter.get('/:id?', function (req, res) {\n    var id = parseInt(req.params.id);\n    if (id) {\n        res.json(chirpstore_1.getChirp(id));\n    }\n    else {\n        var data = chirpstore_1.getChirps();\n        var arr = [];\n        for (var i in data) {\n            if (i !== \"nextid\") {\n                arr.push({ id: parseInt(i), author: data[i].user, text: data[i].text });\n            }\n        }\n        res.status(200).json(arr);\n    }\n});\nrouter.post('/', function (req, res) {\n    var chirp = req.body;\n    chirpstore_1.createChirp(chirp);\n    res.sendStatus(200);\n});\nrouter.put('/:id', function (req, res) {\n    var id = parseInt(req.params.id);\n    var chirp = req.body;\n    chirpstore_1.updateChirp(id, chirp);\n    res.sendStatus(200);\n});\nrouter.delete('/:id', function (req, res) {\n    var id = parseInt(req.params.id);\n    chirpstore_1.deleteChirp(id);\n    res.sendStatus(200);\n});\nexports.default = router;\n\n\n//# sourceURL=webpack:///./src/server/routes.ts?");
 
 /***/ }),
 
@@ -118,7 +118,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ex
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar express = __webpack_require__(/*! express */ \"express\");\nvar routes_1 = __webpack_require__(/*! ./routes */ \"./src/server/routes.ts\");\nvar app = express();\napp.use(express.json());\napp.use(express.static('public'));\napp.use('/chirps', routes_1.default);\nvar port = process.env.PORT || 3000;\napp.listen(port, function () { return console.log(\"Server listening on port: \" + port); });\n\n\n//# sourceURL=webpack:///./src/server/server.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar express = __webpack_require__(/*! express */ \"express\");\nvar morgan = __webpack_require__(/*! morgan */ \"morgan\");\nvar path = __webpack_require__(/*! path */ \"path\");\nvar routes_1 = __webpack_require__(/*! ./routes */ \"./src/server/routes.ts\");\nvar app = express();\napp.use(morgan('dev'));\napp.use(express.json());\napp.use(express.static('public'));\napp.use('/chirps', routes_1.default);\napp.get('*', function (req, res) { return res.sendFile(path.join(__dirname, '../public/index.html')); });\nvar port = process.env.PORT || 3000;\napp.listen(port, function () { return console.log(\"Server listening on port: \" + port); });\n\n\n//# sourceURL=webpack:///./src/server/server.ts?");
 
 /***/ }),
 
@@ -141,6 +141,28 @@ eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///externa
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"fs\");\n\n//# sourceURL=webpack:///external_%22fs%22?");
+
+/***/ }),
+
+/***/ "morgan":
+/*!*************************!*\
+  !*** external "morgan" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"morgan\");\n\n//# sourceURL=webpack:///external_%22morgan%22?");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"path\");\n\n//# sourceURL=webpack:///external_%22path%22?");
 
 /***/ })
 
